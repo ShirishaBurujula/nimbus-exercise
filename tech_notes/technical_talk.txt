@@ -1,0 +1,49 @@
+
+How @Config annotations are used in the framework with examples
+----------------------------------------------------------------
+
+From the below code it is observed that there is a user defined annotation @Config, From the @Config, @DetourConfig  is defined.
+
+
+
+Execution ---->{@config(COL ,TRUE ,COL,Event.DEFAULT_ORDER_NUMBER,url(),when())
+                --------->DetourConfig {(Config main(),onException(),order())}
+               }
+
+
+@Config ---> with properties and Default values  
+			     public static String COL = StringUtils.EMPTY;
+		             public static String TRUE = "true";
+		             String col() default COL;
+		             int order() default Event.DEFAULT_ORDER_NUMBER;
+		             String url();
+		             String when() default TRUE;
+
+ The annotation is used to configure the col,url,order and when with the given values or default values.
+ in the process mostly url was provided as a external value.
+Example : @config is used in DetourExecutionConfigProvider. configAnnotation.onException().url()
+	onException is part of DetourConfig and url is part of config.
+
+public @interface Execution {
+
+	
+     public @interface Config {
+		          public static String COL = StringUtils.EMPTY;
+		          public static String TRUE = "true";
+		          String col() default COL;
+		          int order() default Event.DEFAULT_ORDER_NUMBER;
+		          String url();
+		          String when() default TRUE;
+	                 }
+
+	  
+	      public @interface DetourConfig {
+		             Config main();
+		             Config onException() default @Config(url = "");
+		            int order() default Event.DEFAULT_ORDER_NUMBER;
+	                   }
+
+                }
+
+
+}
